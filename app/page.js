@@ -1,10 +1,10 @@
 import Image from "next/image";
-import LoginPage from "./components/login";
+import CardDemo from "./components/login";
 
 export default function Home() {
   return (
-    <div>
-      <LoginPage />
+    <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <CardDemo />
     </div>
   );
 }
