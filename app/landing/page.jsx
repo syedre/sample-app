@@ -14,9 +14,8 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen  bg-amber-100">
       <div className="flex justify-between items-center w-full bg-white p-4 shadow-md mb-8">
-        <div>
-          <Panda className="h-8 w-8 text-black" />
-        </div>
+        <Panda className="h-8 w-8 text-black" />
+
         <div>
           <InputGroup>
             <InputGroupInput placeholder="Search..." />
