@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import CardDemo from "./components/login";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import SelectEmail from "./components/select";
 
 export default function Home() {
   const [message, setMessage] = useState();
@@ -25,21 +18,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
       <CardDemo />
 
-      <div>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Theme" />
-          </SelectTrigger>
-          <SelectContent>
-            {message &&
-              message.map((msg, index) => (
-                <SelectItem value={msg.id} key={index}>
-                  {msg.email}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <div>{message && <SelectEmail message={message} />}</div>
     </div>
   );
 }
