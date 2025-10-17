@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import AddTodoDialog from "./addTodo";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -35,6 +36,26 @@ const TodoList = () => {
     setIsSheetOpen(false);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete todo");
+      }
+
+      const data = await res.json();
+      console.log("Deleted:", data.todo);
+
+      setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    } catch (error) {
+      console.error("Delete error:", error);
+      // Optionally show a toast or alert
+    }
+  };
+
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`)
       .then((res) => res.json())
@@ -44,7 +65,15 @@ const TodoList = () => {
 
   return (
     <div>
-      <ItemDemo todos={todos} onEdit={handleEditClick} />
+      <AddTodoDialog
+        onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
+      />
+
+      <ItemDemo
+        todos={todos}
+        onEdit={handleEditClick}
+        onDelete={handleDelete}
+      />
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent side="right" className="w-[400px]">

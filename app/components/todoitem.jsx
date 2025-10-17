@@ -10,7 +10,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 
-export function ItemDemo({ todos, onEdit }) {
+export function ItemDemo({ todos, onEdit, onDelete }) {
   return (
     <div className="flex w-full max-w-md flex-col gap-6">
       {todos.map((todo) => (
@@ -20,6 +20,13 @@ export function ItemDemo({ todos, onEdit }) {
             <ItemDescription>{todo.description}</ItemDescription>
           </ItemContent>
           <ItemActions>
+            <Button
+              variant={"outline"}
+              size="sm"
+              onClick={() => onDelete(todo.id)}
+            >
+              Delete
+            </Button>
             <Button variant="outline" size="sm" onClick={() => onEdit(todo)}>
               Edit
             </Button>
