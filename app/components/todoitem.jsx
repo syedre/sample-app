@@ -1,6 +1,4 @@
-import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Pencil, Trash2Icon } from "lucide-react";
 import {
   Item,
   ItemActions,
@@ -20,16 +18,9 @@ export function ItemDemo({ todos, onEdit, onDelete }) {
             <ItemDescription>{todo.description}</ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button
-              variant={"outline"}
-              size="sm"
-              onClick={() => onDelete(todo.id)}
-            >
-              Delete
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => onEdit(todo)}>
-              Edit
-            </Button>
+            <Trash2Icon className="h-4 w-4" onClick={() => onDelete(todo.id)} />
+
+            <Pencil className="h-4 w-4" onClick={() => onEdit(todo)} />
           </ItemActions>
         </Item>
       ))}
