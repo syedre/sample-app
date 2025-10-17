@@ -16,7 +16,7 @@ export function ItemDemo({ todos, onEdit }) {
       {todos.map((todo) => (
         <Item key={todo.id} variant="outline">
           <ItemContent>
-            <ItemTitle>{todo.name}</ItemTitle>
+            <ItemTitle className={"capitalize"}>{todo.name}</ItemTitle>
             <ItemDescription>{todo.description}</ItemDescription>
           </ItemContent>
           <ItemActions>
