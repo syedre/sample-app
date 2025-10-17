@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { ItemDemo } from "./todoitem";
 import {
   Sheet,
@@ -14,23 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: "Learn React",
-      description: "Understand the basics of React",
-    },
-    {
-      id: 2,
-      text: "Build a To-Do App",
-      description: "Create a simple to-do list application",
-    },
-    {
-      id: 3,
-      text: "Style with Tailwind CSS",
-      description: "Apply Tailwind CSS styles to the app",
-    },
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
@@ -49,6 +35,13 @@ const TodoList = () => {
     setIsSheetOpen(false);
   };
 
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`)
+      .then((res) => res.json())
+      .then((data) => setTodos(data))
+      .catch((err) => console.error("Error fetching:", err));
+  }, []);
+
   return (
     <div>
       <ItemDemo todos={todos} onEdit={handleEditClick} />
@@ -65,12 +58,12 @@ const TodoList = () => {
           {selectedTodo && (
             <div className="grid flex-1 auto-rows-min gap-6 px-4 ">
               <div className="grid gap-3">
-                <Label htmlFor="text">Title</Label>
+                <Label htmlFor="name">Title</Label>
                 <Input
-                  id="text"
-                  value={selectedTodo.text}
+                  id="name"
+                  value={selectedTodo.name}
                   onChange={(e) =>
-                    setSelectedTodo({ ...selectedTodo, text: e.target.value })
+                    setSelectedTodo({ ...selectedTodo, name: e.target.value })
                   }
                 />
               </div>
