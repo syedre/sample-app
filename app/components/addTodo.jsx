@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 const AddTodoDialog = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
@@ -43,6 +44,7 @@ const AddTodoDialog = ({ onAdd }) => {
       }
 
       const newTodo = await res.json();
+      toast.success("Todo added successfully");
 
       // Add to state in parent
       onAdd(newTodo);
