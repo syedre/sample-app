@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
+import UserMenu from "./userProfile";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -91,7 +92,17 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`)
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/"; // redirect to login if not logged in
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setTodos(data);
