@@ -28,13 +28,42 @@ const TodoList = () => {
     setIsSheetOpen(true);
   };
 
-  const handleSave = () => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === selectedTodo.id ? selectedTodo : todo
-      )
-    );
-    setIsSheetOpen(false);
+  const handleSave = async () => {
+    if (!selectedTodo) return;
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/updatetodo/${selectedTodo.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: selectedTodo.name,
+            description: selectedTodo.description,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update todo");
+      }
+
+      const data = await response.json();
+
+      // Update the UI with the new todo data from backend
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === selectedTodo.id ? data.todo : todo
+        )
+      );
+
+      setIsSheetOpen(false);
+    } catch (error) {
+      console.error("Error updating todo:", error);
+      alert("Error updating todo. Please try again.");
+    }
   };
 
   const handleDelete = async (id) => {
