@@ -53,6 +53,7 @@ const TodoList = () => {
       const data = await response.json();
 
       // Update the UI with the new todo data from backend
+      toast.success("Todo updated successfully");
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo.id === selectedTodo.id ? data.todo : todo
