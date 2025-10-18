@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
+import { toast } from "sonner";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -49,10 +50,11 @@ const TodoList = () => {
       const data = await res.json();
       console.log("Deleted:", data.todo);
 
+      toast.success("Todo deleted successfully");
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Delete error:", error);
-      // Optionally show a toast or alert
+      toast.error("Failed to delete todo");
     }
   };
 
