@@ -19,6 +19,7 @@ import { toast } from "sonner";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [searchTodo, setSearchTodo] = useState("");
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
@@ -89,16 +90,35 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`)
-      .then((res) => res.json())
-      .then((data) => setTodos(data))
-      .catch((err) => console.error("Error fetching:", err));
-  }, []);
+    if (searchTodo.trim() === "") {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`)
+        .then((res) => res.json())
+        .then((data) => setTodos(data))
+        .catch((err) => console.error("Error fetching:", err));
+      return;
+    }
+    if (todos.length > 0) {
+      setTodos((prevTodos) =>
+        prevTodos.filter(
+          (todo) =>
+            todo.name.toLowerCase().includes(searchTodo.toLowerCase()) ||
+            todo.description.toLowerCase().includes(searchTodo.toLowerCase())
+        )
+      );
+    }
+  }, [searchTodo]);
 
   return (
     <div>
       <AddTodoDialog
         onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
+      />
+
+      <Input
+        className={"mb-2"}
+        placeholder="Search todos..."
+        onChange={(e) => setSearchTodo(e.target.value)}
+        value={searchTodo}
       />
 
       <ItemDemo
