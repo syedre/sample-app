@@ -78,21 +78,21 @@ export default function SignupCard() {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto mt-20">
-      <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Enter your details to sign up and get started
-        </CardDescription>
-        <CardAction>
-          <Button variant="link" onClick={() => router.push("/")}>
-            Back to Login
-          </Button>
-        </CardAction>
-      </CardHeader>
+    <form onSubmit={handleSignup}>
+      <Card className="w-full max-w-sm mx-auto mt-20">
+        <CardHeader>
+          <CardTitle>Create an account</CardTitle>
+          <CardDescription>
+            Enter your details to sign up and get started
+          </CardDescription>
+          <CardAction>
+            <Button variant="link" onClick={() => router.push("/")}>
+              Back to Login
+            </Button>
+          </CardAction>
+        </CardHeader>
 
-      <CardContent>
-        <form onSubmit={handleSignup}>
+        <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="name">Full Name</Label>
@@ -137,19 +137,14 @@ export default function SignupCard() {
           {success && (
             <p className="text-green-600 text-sm mt-2 text-center">{success}</p>
           )}
-        </form>
-      </CardContent>
+        </CardContent>
 
-      <CardFooter className="flex-col gap-2">
-        <Button
-          type="submit"
-          onClick={handleSignup}
-          className="w-full"
-          disabled={loading}
-        >
-          {loading ? "Creating account..." : "Sign Up"}
-        </Button>
-      </CardFooter>
-    </Card>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Creating account..." : "Sign Up"}
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 }
