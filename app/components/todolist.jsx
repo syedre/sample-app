@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
-import UserMenu from "./userProfile";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
