@@ -17,10 +17,8 @@ import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
 
-const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   const [searchTodo, setSearchTodo] = useState("");
-  const [filteredTodos, setFilteredTodos] = useState([]);
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
@@ -90,25 +88,25 @@ const TodoList = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/"; // redirect to login if not logged in
-      return;
-    }
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     window.location.href = "/"; // redirect to login if not logged in
+  //     return;
+  //   }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTodos(data);
-        setFilteredTodos(data);
-      })
-      .catch((err) => console.error("Error fetching:", err));
-  }, []);
+  //   fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setTodos(data);
+  //       setFilteredTodos(data);
+  //     })
+  //     .catch((err) => console.error("Error fetching:", err));
+  // }, []);
 
   useEffect(() => {
     if (searchTodo.trim() === "") {

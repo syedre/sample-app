@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
-export default function UserMenu() {
+export default function UserMenu({ userData }) {
   const [user] = useState({
     name: "Rehan Ahmed",
     email: "rehan@example.com",
@@ -43,13 +43,16 @@ export default function UserMenu() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-56 mt-2">
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <span className="font-medium">{user.name}</span>
+                <span className="font-medium capitalize">
+                  {userData?.user_name}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-red-500">
               Logout
