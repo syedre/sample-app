@@ -7,6 +7,7 @@ import UserMenu from "../components/userProfile";
 export default function TodosPage() {
   const [todos, setTodos] = useState([]);
   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,15 +23,18 @@ export default function TodosPage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setTodos(data);
-        setFilteredTodos(data);
+        setTodos(data?.todos);
+        setFilteredTodos(data?.todos);
+        setUserData(data?.user);
       })
       .catch((err) => console.error("Error fetching:", err));
   }, []);
 
   return (
     <div>
-      <UserMenu userData={todos[0]} />
+      {userData && userData?.user_name && (
+        <UserMenu userData={userData} setUser={setUserData} />
+      )}
       <div className="flex  flex-col   p-24">
         <TodoList
           todos={todos}

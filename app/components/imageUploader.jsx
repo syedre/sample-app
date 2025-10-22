@@ -4,12 +4,11 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function UploadPage() {
+export default function UploadPage({ file, setFile }) {
   const fileInputRef = useRef(null);
-  const [file, setFile] = useState(null);
+
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploadedUrl, setUploadedUrl] = useState(null);
-  const [message, setMessage] = useState("");
 
   // trigger hidden file input when avatar is clicked
   const handleAvatarClick = () => {
@@ -22,33 +21,6 @@ export default function UploadPage() {
     if (selected) {
       setFile(selected);
       setPreviewUrl(URL.createObjectURL(selected));
-      handleUpload(selected); // auto-upload after selecting
-    }
-  };
-
-  // upload logic
-  const handleUpload = async (imageFile) => {
-    const formData = new FormData();
-    formData.append("image", imageFile);
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      console.log(data, "data-------");
-
-      if (res.ok) {
-        setMessage("✅ ");
-
-        setUploadedUrl(data?.imageUrl);
-      } else {
-        setMessage("❌ Upload failed: " + data.message);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("❌ Error uploading file");
     }
   };
 
@@ -62,9 +34,6 @@ export default function UploadPage() {
           <AvatarImage src={uploadedUrl || previewUrl || ""} alt="avatar" />
           <AvatarFallback>IMG</AvatarFallback>
         </Avatar>
-        <div className="absolute bottom-0 right-0 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-md">
-          Change
-        </div>
       </div>
 
       {/* Hidden input */}

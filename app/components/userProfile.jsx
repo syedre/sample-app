@@ -12,19 +12,62 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import UploadPage from "./imageUploader";
+import { toast } from "sonner";
 
-export default function UserMenu({ userData }) {
-  const [user] = useState({
-    name: "Rehan Ahmed",
-    email: "rehan@example.com",
-    avatar:
-      "https://mumbai-test-express.s3.ap-south-1.amazonaws.com/uploads/0b06d363-05fd-4248-99bb-33bd2e2cbfc7.png", // or a placeholder image
-  });
+export default function UserMenu({ userData, setUser }) {
+  const [open, setOpen] = useState(false);
+  const [newName, setNewName] = useState(userData?.user_name);
+  const [file, setFile] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/"; // redirect to login
+  };
+
+  const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("name", newName);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUser({
+          ...userData,
+          user_name: data?.user?.name,
+          user_image: data?.user?.image_url,
+        });
+        toast.success("Profile updated successfully");
+      } else {
+        toast.error("❌ Upload failed: " + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error uploading file");
+    }
+
+    setOpen(false);
   };
 
   return (
@@ -34,10 +77,13 @@ export default function UserMenu({ userData }) {
         <div></div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer">
+            <div className="flex items-center gap-2 cursor-pointer ">
               <Avatar>
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                <AvatarImage
+                  src={userData?.user_image}
+                  alt={userData?.user_name}
+                />
+                <AvatarFallback>{"R"}</AvatarFallback>
               </Avatar>
             </div>
           </DropdownMenuTrigger>
@@ -52,13 +98,44 @@ export default function UserMenu({ userData }) {
                 </span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setOpen(true)}>
+              Settings
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-red-500">
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Update Profile</DialogTitle>
+            </DialogHeader>
+
+            <div className="flex flex-col  gap-4 py-4">
+              {/* <Avatar className="w-20 h-20">
+                <AvatarImage src={newAvatar} />
+                <AvatarFallback>{newName.charAt(0)}</AvatarFallback>
+              </Avatar> */}
+              <UploadPage file={file} setFile={setFile} />
+
+              <Label htmlFor="name"> Username</Label>
+              <Input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>Save</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </header>
   );
