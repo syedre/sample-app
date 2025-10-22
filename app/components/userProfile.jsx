@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Panda } from "lucide-react";
+import { LogOut, Panda, Pencil, Settings, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -93,16 +93,17 @@ export default function UserMenu({ userData, setUser }) {
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <span className="font-medium capitalize">
-                  {userData?.user_name}
-                </span>
+                <User />
+                <span className="capitalize">{userData?.user_name}</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setOpen(true)}>
+            <DropdownMenuItem onClick={() => setOpen(true)} icon={<Pencil />}>
+              <Settings />
               Settings
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+              <LogOut />
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
