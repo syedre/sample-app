@@ -22,9 +22,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import UploadPage from "./imageUploader";
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
 
 export default function UserMenu({ userData, setUser }) {
   const [open, setOpen] = useState(false);
@@ -114,19 +114,18 @@ export default function UserMenu({ userData, setUser }) {
               <DialogTitle>Update Profile</DialogTitle>
             </DialogHeader>
 
-            <div className="flex flex-col  gap-4 py-4">
-              {/* <Avatar className="w-20 h-20">
-                <AvatarImage src={newAvatar} />
-                <AvatarFallback>{newName.charAt(0)}</AvatarFallback>
-              </Avatar> */}
-              <UploadPage file={file} setFile={setFile} />
-
-              <Label htmlFor="name"> Username</Label>
-              <Input
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="Enter your name"
-              />
+            <div className="flex flex-col gap-4">
+              <UploadPage url={userData?.user_image} setFile={setFile} />
+              <div>
+                <Label htmlFor="name" className="mb-2">
+                  User Name
+                </Label>
+                <Input
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="Enter your name"
+                />
+              </div>
             </div>
 
             <DialogFooter>
