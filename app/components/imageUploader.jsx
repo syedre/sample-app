@@ -30,11 +30,14 @@ export default function UploadPage({ url, setFile }) {
       <Label htmlFor="name" className="mb-2">
         Profile Picture
       </Label>
-      <div onClick={handleAvatarClick} className="cursor-pointer relative">
-        <div className="absolute top-8 left-8 z-10">
+      <div className="relative">
+        <div className="absolute top-8 left-9  z-10">
           <Pencil color="grey" />
         </div>
-        <Avatar className="h-24 w-24  hover:opacity-50">
+        <Avatar
+          onClick={handleAvatarClick}
+          className="h-24 w-24  hover:opacity-50 cursor-pointer border"
+        >
           <AvatarImage
             src={previewUrl || ""}
             alt="avatar"
