@@ -78,73 +78,80 @@ export default function SignupCard() {
   };
 
   return (
-    <form onSubmit={handleSignup}>
-      <Card className="w-full max-w-sm mx-auto mt-20">
-        <CardHeader>
-          <CardTitle>Create an account</CardTitle>
-          <CardDescription>
-            Enter your details to sign up and get started
-          </CardDescription>
-          <CardAction>
-            <Button variant="link" onClick={() => router.push("/")}>
-              Back to Login
-            </Button>
-          </CardAction>
-        </CardHeader>
+    <div className="flex w-full min-h-screen">
+      <div className="flex-1  bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300"></div>
+      <div className="flex-1 flex items-center justify-center w-full">
+        <form onSubmit={handleSignup} className="w-full flex justify-center">
+          <Card className="w-[70%] ">
+            <CardHeader>
+              <CardTitle>Create an account</CardTitle>
+              <CardDescription>
+                Enter your details to sign up and get started
+              </CardDescription>
+              <CardAction>
+                <Button variant="link" onClick={() => router.push("/")}>
+                  Back to Login
+                </Button>
+              </CardAction>
+            </CardHeader>
 
-        <CardContent>
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                required
-              />
-            </div>
+            <CardContent>
+              <div className="flex flex-col gap-6">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="m@example.com"
-                required
-              />
-            </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="m@example.com"
+                    required
+                  />
+                </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-              />
-            </div>
-          </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+              </div>
 
-          {error && (
-            <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
-          )}
-          {success && (
-            <p className="text-green-600 text-sm mt-2 text-center">{success}</p>
-          )}
-        </CardContent>
+              {error && (
+                <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
+              )}
+              {success && (
+                <p className="text-green-600 text-sm mt-2 text-center">
+                  {success}
+                </p>
+              )}
+            </CardContent>
 
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Sign Up"}
-          </Button>
-        </CardFooter>
-      </Card>
-    </form>
+            <CardFooter className="flex-col gap-2">
+              <Button type="submit" className="w-full " disabled={loading}>
+                {loading ? "Creating account..." : "Sign Up"}
+              </Button>
+            </CardFooter>
+          </Card>
+        </form>
+      </div>
+    </div>
   );
 }

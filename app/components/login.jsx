@@ -56,7 +56,7 @@ export default function CardDemo() {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto mt-20">
+    <Card className="w-[70%]">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>
