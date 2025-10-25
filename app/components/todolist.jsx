@@ -124,7 +124,7 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   }, [searchTodo, todos]);
 
   return (
-    <div>
+    <React.Fragment>
       <AddTodoDialog
         onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
       />
@@ -188,7 +188,7 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
           </SheetFooter>
         </SheetContent>
       </Sheet>
-    </div>
+    </React.Fragment>
   );
 };
 
