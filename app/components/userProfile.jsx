@@ -71,7 +71,7 @@ export default function UserMenu({ userData, setUser }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b ">
+    <header className="sticky top-0 left-0 right-0 z-50 border-b bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* <Panda className="h-8 w-8 text-black" /> */}
         <div></div>

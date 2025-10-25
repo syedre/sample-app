@@ -31,17 +31,21 @@ export default function TodosPage() {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen">
       {userData && userData?.user_name && (
         <UserMenu userData={userData} setUser={setUserData} />
       )}
-      <div className="flex  flex-col   p-24">
-        <TodoList
-          todos={todos}
-          setTodos={setTodos}
-          filteredTodos={filteredTodos}
-          setFilteredTodos={setFilteredTodos}
-        />
+
+      {/* Body area */}
+      <div className="flex flex-col h-[calc(100vh-65px)]">
+        <div className="flex-1 bg-white overflow-y-auto p-4 scrollbar-hide">
+          <TodoList
+            todos={todos}
+            setTodos={setTodos}
+            filteredTodos={filteredTodos}
+            setFilteredTodos={setFilteredTodos}
+          />
+        </div>
       </div>
     </div>
   );
