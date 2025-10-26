@@ -13,3 +13,21 @@ export async function postTodo(name, description) {
   });
   return response;
 }
+
+export async function updateTodo(id, name, description) {
+  // const token = localStorage.getItem("token");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/updatetodo/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+      }),
+    }
+  );
+  return response;
+}

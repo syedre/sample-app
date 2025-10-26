@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import { updateTodo } from "../apis/todos";
 
 const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   const [searchTodo, setSearchTodo] = useState("");
@@ -35,18 +36,10 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/updatetodo/${selectedTodo.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: selectedTodo.name,
-            description: selectedTodo.description,
-          }),
-        }
+      const response = await updateTodo(
+        selectedTodo.id,
+        selectedTodo.name,
+        selectedTodo.description
       );
 
       if (!response.ok) {
@@ -94,26 +87,6 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
       toast.error("Failed to delete todo");
     }
   };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     window.location.href = "/"; // redirect to login if not logged in
-  //     return;
-  //   }
-
-  //   fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setTodos(data);
-  //       setFilteredTodos(data);
-  //     })
-  //     .catch((err) => console.error("Error fetching:", err));
-  // }, []);
 
   useEffect(() => {
     if (searchTodo.trim() === "") {
