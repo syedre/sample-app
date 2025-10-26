@@ -2,22 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { ItemDemo } from "./todoitem";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-  SheetClose,
-} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
-import { Spinner } from "@/components/ui/spinner";
 import { updateTodo } from "../apis/todos";
+import CommonSheet from "./commonSheet";
 
 const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   const [searchTodo, setSearchTodo] = useState("");
@@ -122,53 +112,40 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
         onEdit={handleEditClick}
         onDelete={handleDelete}
       />
-
-      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent side="right" className="w-[400px]">
-          <SheetHeader>
-            <SheetTitle>Edit To-Do</SheetTitle>
-            <SheetDescription>
-              Make changes and click save when you're done.
-            </SheetDescription>
-          </SheetHeader>
-
-          {selectedTodo && (
-            <div className="grid flex-1 auto-rows-min gap-6 px-4 ">
-              <div className="grid gap-3">
-                <Label htmlFor="name">Title</Label>
-                <Input
-                  id="name"
-                  value={selectedTodo.name}
-                  onChange={(e) =>
-                    setSelectedTodo({ ...selectedTodo, name: e.target.value })
-                  }
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  value={selectedTodo.description}
-                  onChange={(e) =>
-                    setSelectedTodo({
-                      ...selectedTodo,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </div>
+      <CommonSheet
+        open={isSheetOpen}
+        setIsSheetOpen={setIsSheetOpen}
+        handleSave={handleSave}
+        loading={loading}
+      >
+        {selectedTodo && (
+          <div className="grid flex-1 auto-rows-min gap-6 px-4 ">
+            <div className="grid gap-3">
+              <Label htmlFor="name">Title</Label>
+              <Input
+                id="name"
+                value={selectedTodo.name}
+                onChange={(e) =>
+                  setSelectedTodo({ ...selectedTodo, name: e.target.value })
+                }
+              />
             </div>
-          )}
-          <SheetFooter>
-            <Button type="submit" disabled={loading} onClick={handleSave}>
-              {loading ? <Spinner /> : "Save"}
-            </Button>
-            <SheetClose asChild>
-              <Button variant="outline">Close</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+            <div className="grid gap-3">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                value={selectedTodo.description}
+                onChange={(e) =>
+                  setSelectedTodo({
+                    ...selectedTodo,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+        )}
+      </CommonSheet>
     </React.Fragment>
   );
 };
