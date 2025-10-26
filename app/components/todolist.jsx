@@ -125,7 +125,7 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
 
   return (
     <React.Fragment>
-      <div className="sticky top-0 right-0 left-0 z-50 bg-white p-2 mb-2">
+      <div className="sticky top-0 right-0 left-0 z-50 bg-white pl-2 pt-2 mb-2">
         <AddTodoDialog
           onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
         />
