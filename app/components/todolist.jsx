@@ -16,12 +16,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   const [searchTodo, setSearchTodo] = useState("");
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleEditClick = (todo) => {
     setSelectedTodo(todo);
@@ -30,6 +32,7 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
 
   const handleSave = async () => {
     if (!selectedTodo) return;
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -64,6 +67,10 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
     } catch (error) {
       console.error("Error updating todo:", error);
       alert("Error updating todo. Please try again.");
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -180,8 +187,8 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
             </div>
           )}
           <SheetFooter>
-            <Button type="submit" onClick={handleSave}>
-              Save changes
+            <Button type="submit" disabled={loading} onClick={handleSave}>
+              {loading ? <Spinner /> : "Save"}
             </Button>
             <SheetClose asChild>
               <Button variant="outline">Close</Button>
