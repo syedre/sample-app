@@ -39,8 +39,8 @@ export default function TodosPage() {
       {/* Body area */}
       <div className="flex flex-col h-[calc(100vh-65px)]">
         <div className="flex-1 overflow-y-auto  scrollbar-hide h-full">
-          <div className="grid grid-cols-6">
-            <div className="col-span-2 col-start-3">
+          <div className="grid sm:grid-cols-1 md:grid-cols-6">
+            <div className="sm:col-span-1 md:col-span-2 md:col-start-3">
               <TodoList
                 todos={todos}
                 setTodos={setTodos}
