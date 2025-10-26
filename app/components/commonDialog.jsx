@@ -18,8 +18,9 @@ const CommonDialog = ({
   open,
   setOpen,
   loading,
-  handleAdd,
+  handleSubmit,
   isTrigger = false,
+  title,
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -31,10 +32,12 @@ const CommonDialog = ({
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New To-Do</DialogTitle>
-          <DialogDescription>
-            Fill out the form to create a new to-do.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          {isTrigger ? (
+            <DialogDescription>
+              Fill out the form to create a new to-do.
+            </DialogDescription>
+          ) : null}
         </DialogHeader>
         {children}
 
@@ -44,8 +47,8 @@ const CommonDialog = ({
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={handleAdd} disabled={loading}>
-            {loading ? <Spinner /> : "Add"}
+          <Button onClick={handleSubmit} disabled={loading}>
+            {loading ? <Spinner /> : "Save"}
           </Button>
         </DialogFooter>
       </DialogContent>

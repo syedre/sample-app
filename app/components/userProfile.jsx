@@ -1,7 +1,6 @@
 "use client";
 
 import { LogOut, Panda, Pencil, Settings, User } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,20 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import UploadPage from "./imageUploader";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner";
+import CommonDialog from "./commonDialog";
 
 export default function UserMenu({ userData, setUser }) {
   const [open, setOpen] = useState(false);
@@ -115,36 +106,28 @@ export default function UserMenu({ userData, setUser }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Update Profile</DialogTitle>
-            </DialogHeader>
 
-            <div className="flex flex-col gap-4">
-              <UploadPage url={userData?.user_image} setFile={setFile} />
-              <div>
-                <Label htmlFor="name" className="mb-2">
-                  User Name
-                </Label>
-                <Input
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="Enter your name"
-                />
-              </div>
+        <CommonDialog
+          handleSubmit={handleSave}
+          loading={loading}
+          open={open}
+          setOpen={setOpen}
+          title="Update Profile"
+        >
+          <div className="flex flex-col gap-4">
+            <UploadPage url={userData?.user_image} setFile={setFile} />
+            <div>
+              <Label htmlFor="name" className="mb-2">
+                User Name
+              </Label>
+              <Input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                placeholder="Enter your name"
+              />
             </div>
-
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSave} disabled={loading}>
-                {loading ? <Spinner /> : "Save"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </div>
+        </CommonDialog>
       </div>
     </header>
   );

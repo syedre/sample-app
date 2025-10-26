@@ -44,11 +44,12 @@ const AddTodoDialog = ({ onAdd }) => {
 
   return (
     <CommonDialog
-      handleAdd={handleAdd}
+      handleSubmit={handleAdd}
       loading={loading}
       open={open}
       setOpen={setOpen}
       isTrigger={true}
+      title="Add New To-Do"
     >
       <div className="grid gap-4 py-4">
         <div className="grid gap-2">
