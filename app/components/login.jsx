@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function CardDemo() {
   const router = useRouter();
@@ -38,7 +39,6 @@ export default function CardDemo() {
 
       if (!res.ok) {
         setError(data.message || "Login failed");
-        setLoading(false);
         return;
       }
 
@@ -50,8 +50,6 @@ export default function CardDemo() {
     } catch (err) {
       console.error("Login error:", err);
       setError("Something went wrong. Try again.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -111,7 +109,7 @@ export default function CardDemo() {
           className="w-full"
           disabled={loading}
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? <Spinner /> : "Login"}
         </Button>
       </CardFooter>
     </Card>

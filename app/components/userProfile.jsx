@@ -25,11 +25,13 @@ import { useEffect, useState } from "react";
 import UploadPage from "./imageUploader";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function UserMenu({ userData, setUser }) {
   const [open, setOpen] = useState(false);
   const [newName, setNewName] = useState(userData?.user_name);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -40,6 +42,7 @@ export default function UserMenu({ userData, setUser }) {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("name", newName);
+    setLoading(true);
 
     try {
       const token = localStorage.getItem("token");
@@ -65,6 +68,10 @@ export default function UserMenu({ userData, setUser }) {
     } catch (err) {
       console.error(err);
       toast.error("Error uploading file");
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
 
     setOpen(false);
@@ -132,7 +139,9 @@ export default function UserMenu({ userData, setUser }) {
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleSave}>Save</Button>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? <Spinner /> : "Save"}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

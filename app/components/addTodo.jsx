@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 const AddTodoDialog = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
@@ -59,7 +60,9 @@ const AddTodoDialog = ({ onAdd }) => {
       console.error("Error adding todo:", err);
       // You can show a toast or error UI here
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -107,7 +110,7 @@ const AddTodoDialog = ({ onAdd }) => {
             </Button>
           </DialogClose>
           <Button onClick={handleAdd} disabled={loading}>
-            {loading ? "Adding..." : "Add"}
+            {loading ? <Spinner /> : "Add"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function SignupCard() {
 
       if (!res.ok) {
         setError(data.message || "Signup failed");
-        setLoading(false);
+        // setLoading(false);
         return;
       }
 
@@ -146,7 +147,7 @@ export default function SignupCard() {
 
             <CardFooter className="flex-col gap-2">
               <Button type="submit" className="w-full " disabled={loading}>
-                {loading ? "Creating account..." : "Sign Up"}
+                {loading ? <Spinner /> : "Sign Up"}
               </Button>
             </CardFooter>
           </Card>
