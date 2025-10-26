@@ -48,6 +48,7 @@ const AddTodoDialog = ({ onAdd }) => {
       loading={loading}
       open={open}
       setOpen={setOpen}
+      isTrigger={true}
     >
       <div className="grid gap-4 py-4">
         <div className="grid gap-2">

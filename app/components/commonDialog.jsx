@@ -13,12 +13,21 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 
-const CommonDialog = ({ children, open, setOpen, loading, handleAdd }) => {
+const CommonDialog = ({
+  children,
+  open,
+  setOpen,
+  loading,
+  handleAdd,
+  isTrigger = false,
+}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="mb-4">Add Todo</Button>
-      </DialogTrigger>
+      {isTrigger ? (
+        <DialogTrigger asChild>
+          <Button className="mb-4">Add Todo</Button>
+        </DialogTrigger>
+      ) : null}
 
       <DialogContent>
         <DialogHeader>
