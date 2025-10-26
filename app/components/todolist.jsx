@@ -125,16 +125,17 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
 
   return (
     <React.Fragment>
-      <AddTodoDialog
-        onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
-      />
+      <div className="sticky top-0 right-0 left-0 z-50 bg-white p-2 mb-2">
+        <AddTodoDialog
+          onAdd={(newTodo) => setTodos((prev) => [...prev, newTodo])}
+        />
 
-      <Input
-        className={"mb-2"}
-        placeholder="Search todos..."
-        onChange={(e) => setSearchTodo(e.target.value)}
-        value={searchTodo}
-      />
+        <Input
+          placeholder="Search todos..."
+          onChange={(e) => setSearchTodo(e.target.value)}
+          value={searchTodo}
+        />
+      </div>
 
       <ItemDemo
         todos={filteredTodos}

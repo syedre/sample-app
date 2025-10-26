@@ -10,7 +10,7 @@ import {
 
 export function ItemDemo({ todos, onEdit, onDelete }) {
   return (
-    <div className="flex w-full max-w-md flex-col gap-6">
+    <div className="flex w-full max-w-md flex-col gap-6 pl-2 pb-2">
       {todos &&
         todos?.map((todo) => (
           <Item key={todo.id} variant="outline">
