@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import UploadPage from "./imageUploader";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
-import CommonDialog from "./commonDialog";
-import CommonDropdown from "./commonDropdown";
+import CommonDialog from "../common/commonDialog";
+import CommonDropdown from "../common/commonDropdown";
 
 export default function UserMenu({ userData, setUser }) {
   const [open, setOpen] = useState(false);
