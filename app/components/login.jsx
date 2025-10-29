@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { login } from "../apis/authentication";
 
 export default function CardDemo() {
   const router = useRouter();
@@ -29,12 +30,7 @@ export default function CardDemo() {
     setError("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
+      const res = await login(email, password);
       const data = await res.json();
 
       if (!res.ok) {

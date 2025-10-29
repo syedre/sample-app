@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { login, signup } from "../apis/authentication";
 
 export default function SignupCard() {
   const router = useRouter();
@@ -32,12 +33,7 @@ export default function SignupCard() {
     setSuccess("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
+      const res = await signup(name, email, password);
       const data = await res.json();
 
       if (!res.ok) {
@@ -52,14 +48,7 @@ export default function SignupCard() {
         router.push("/todos");
       } else {
         // if backend only returns message, then manually login after signup
-        const loginRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/login`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        const loginRes = login(email, password);
         const loginData = await loginRes.json();
         if (loginRes.ok) {
           localStorage.setItem("token", loginData.token);
