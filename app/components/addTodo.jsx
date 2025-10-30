@@ -79,7 +79,15 @@ const AddTodoDialog = ({ onAdd }) => {
         </div>
 
         <CompoundDialog.Footer>
-          <CompoundDialog.Close loading={loading}></CompoundDialog.Close>
+          <CompoundDialog.Close
+            loading={loading}
+            onCan={() =>
+              setFormdata({
+                name: "",
+                description: "",
+              })
+            }
+          ></CompoundDialog.Close>
           <Button onClick={handleAdd} disabled={loading}>
             {loading ? <Spinner /> : "Save"}
           </Button>

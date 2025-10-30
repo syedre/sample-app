@@ -47,10 +47,10 @@ function Footer({ children }) {
   return <DialogFooter>{children}</DialogFooter>;
 }
 
-function Close({ children, loading }) {
+function Close({ children, loading, onCan }) {
   return (
     <DialogClose asChild>
-      <Button variant="outline" disabled={loading}>
+      <Button variant="outline" disabled={loading} onClick={onCan}>
         Cancel
       </Button>
     </DialogClose>
