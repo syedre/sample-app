@@ -47,3 +47,17 @@ export async function listTodos() {
   const data = await response.json();
   return data;
 }
+
+// apis/todos.js
+export async function deleteTodo(id) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(error || "Failed to delete todo");
+  }
+
+  return res.json(); // return deleted todo data
+}

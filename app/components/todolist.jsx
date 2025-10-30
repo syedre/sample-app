@@ -5,7 +5,7 @@ import { ItemDemo } from "./todoitem";
 import { Input } from "@/components/ui/input";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
-import { updateTodo } from "../apis/todos";
+import { deleteTodo, updateTodo } from "../apis/todos";
 import CommonSheet from "../common/commonSheet";
 import InputLabel from "../common/inputLabel";
 
@@ -59,21 +59,10 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to delete todo");
-      }
-
-      const data = await res.json();
-      console.log("Deleted:", data.todo);
-
+      await deleteTodo(id);
       toast.success("Todo deleted successfully");
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete todo");
     }
   };
