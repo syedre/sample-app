@@ -5,24 +5,30 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { login } from "../apis/authentication";
+import InputLabel from "../common/inputLabel";
+import { Login_Form } from "../constants/forms";
 
 export default function CardDemo() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [logindata, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleLogin = (e) => {
+    const { id, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [id]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,19 +36,16 @@ export default function CardDemo() {
     setError("");
 
     try {
+      const { email, password } = logindata;
       const res = await login(email, password);
-      const data = await res.json();
-
       if (!res.ok) {
         setError(data.message || "Login failed");
         return;
       }
-
-      // Save token to localStorage
-      localStorage.setItem("token", data.token);
-
-      // Navigate to todos page
-      router.push("/todos");
+      await res.json().then((data) => {
+        localStorage.setItem("token", data.token);
+        router.push("/todos");
+      });
     } catch (err) {
       console.error("Login error:", err);
       setError("Something went wrong. Try again.");
@@ -51,63 +54,47 @@ export default function CardDemo() {
 
   return (
     <Card className="w-[70%]">
-      <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
-        <CardAction>
-          <Button variant="link" onClick={() => router.push("/signup")}>
-            Sign Up
-          </Button>
-        </CardAction>
-      </CardHeader>
-
-      <CardContent>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <CardHeader className={"pb-4"}>
+          <CardTitle>Login to your account</CardTitle>
+          <CardDescription>
+            Enter your email below to login to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="flex flex-col gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+            {Login_Form?.map((data, index) => (
+              <div className="grid gap-2" key={index}>
+                <InputLabel
+                  handleInput={handleLogin}
+                  loading={loading}
+                  title={data?.label}
+                  value={logindata?.[data?.label]}
+                  required={true}
+                  type={data?.type}
+                />
               </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+            ))}
           </div>
 
           {error && (
             <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
           )}
-        </form>
-      </CardContent>
+        </CardContent>
 
-      <CardFooter className="flex-col gap-2">
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          className="w-full"
-          disabled={loading}
-        >
-          {loading ? <Spinner /> : "Login"}
-        </Button>
-      </CardFooter>
+        <CardFooter className="flex-col gap-2 mt-4">
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? <Spinner /> : "Login"}
+          </Button>
+        </CardFooter>
+      </form>
+      <Button
+        variant={"link"}
+        className=" text-blue-500"
+        onClick={() => router.push("/signup")}
+      >
+        Sign up
+      </Button>
     </Card>
   );
 }
