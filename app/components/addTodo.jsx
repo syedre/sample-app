@@ -1,21 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { postTodo } from "../apis/todos";
 import CompoundDialog from "../common/compoundDialog";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
+import InputLabel from "../common/inputLabel";
 
 const AddTodoDialog = ({ onAdd }) => {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [formdata, setFormdata] = useState({ name: "", description: "" });
 
   const handleAdd = async () => {
+    const { name, description } = formdata;
     if (name.trim() === "") return;
     setLoading(true);
     try {
@@ -29,10 +28,10 @@ const AddTodoDialog = ({ onAdd }) => {
 
       // Add to state in parent
       onAdd(newTodo);
-
-      // Reset form
-      setName("");
-      setDescription("");
+      setFormdata({
+        name: "",
+        description: "",
+      });
       setOpen(false);
     } catch (err) {
       console.error("Error adding todo:", err);
@@ -42,6 +41,11 @@ const AddTodoDialog = ({ onAdd }) => {
         setLoading(false);
       }, 1000);
     }
+  };
+
+  const handleInput = (e) => {
+    const { id, value } = e.target;
+    setFormdata((prev) => ({ ...prev, [id]: value }));
   };
 
   return (
@@ -57,23 +61,19 @@ const AddTodoDialog = ({ onAdd }) => {
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="todo-name">Title</Label>
-            <Input
-              id="todo-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter todo title"
-              disabled={loading}
+            <InputLabel
+              handleInput={handleInput}
+              loading={loading}
+              value={formdata.name}
+              title={"name"}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="todo-description">Description</Label>
-            <Input
-              id="todo-description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
-              disabled={loading}
+            <InputLabel
+              handleInput={handleInput}
+              loading={loading}
+              value={formdata.description}
+              title={"description"}
             />
           </div>
         </div>
