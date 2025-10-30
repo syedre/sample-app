@@ -122,7 +122,11 @@ export default function SignupCard() {
                 {loading ? <Spinner /> : "Sign Up"}
               </Button>
             </CardFooter>
-            <Button variant="link" onClick={() => router.push("/")}>
+            <Button
+              variant="link"
+              onClick={() => router.push("/")}
+              className=" text-blue-500"
+            >
               Back to Login
             </Button>
           </Card>
