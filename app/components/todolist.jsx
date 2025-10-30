@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { ItemDemo } from "./todoitem";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
 import { updateTodo } from "../apis/todos";
 import CommonSheet from "../common/commonSheet";
+import InputLabel from "../common/inputLabel";
 
 const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   const [searchTodo, setSearchTodo] = useState("");
@@ -78,6 +78,11 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
     }
   };
 
+  const handleEditInput = (e) => {
+    const { id, value } = e.target;
+    setSelectedTodo({ ...selectedTodo, [id]: value });
+  };
+
   useEffect(() => {
     if (searchTodo.trim() === "") {
       setFilteredTodos(todos);
@@ -121,26 +126,19 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
         {selectedTodo && (
           <div className="grid flex-1 auto-rows-min gap-6 px-4 ">
             <div className="grid gap-3">
-              <Label htmlFor="name">Title</Label>
-              <Input
-                id="name"
+              <InputLabel
+                handleInput={handleEditInput}
+                loading={loading}
+                title={"name"}
                 value={selectedTodo.name}
-                onChange={(e) =>
-                  setSelectedTodo({ ...selectedTodo, name: e.target.value })
-                }
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
+              <InputLabel
+                handleInput={handleEditInput}
+                loading={loading}
+                title={"description"}
                 value={selectedTodo.description}
-                onChange={(e) =>
-                  setSelectedTodo({
-                    ...selectedTodo,
-                    description: e.target.value,
-                  })
-                }
               />
             </div>
           </div>
