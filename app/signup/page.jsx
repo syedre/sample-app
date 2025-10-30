@@ -5,32 +5,39 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { login, signup } from "../apis/authentication";
+import { Sign_Up_Form } from "../constants/forms";
+import InputLabel from "../common/inputLabel";
 
 export default function SignupCard() {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [signUpdata, setSignUpdata] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setSignUpdata((prev) => ({ ...prev, [id]: value }));
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSuccess("");
+    const { name, email, password } = signUpdata;
 
     try {
       const res = await signup(name, email, password);
@@ -38,7 +45,6 @@ export default function SignupCard() {
 
       if (!res.ok) {
         setError(data.message || "Signup failed");
-        // setLoading(false);
         return;
       }
 
@@ -48,7 +54,7 @@ export default function SignupCard() {
         router.push("/todos");
       } else {
         // if backend only returns message, then manually login after signup
-        const loginRes = login(email, password);
+        const loginRes = await login(email, password);
         const loginData = await loginRes.json();
         if (loginRes.ok) {
           localStorage.setItem("token", loginData.token);
@@ -63,6 +69,11 @@ export default function SignupCard() {
       console.error("Signup error:", err);
       setError("Something went wrong. Try again.");
     } finally {
+      setSignUpdata({
+        name: "",
+        email: "",
+        password: "",
+      });
       setLoading(false);
     }
   };
@@ -78,50 +89,22 @@ export default function SignupCard() {
               <CardDescription>
                 Enter your details to sign up and get started
               </CardDescription>
-              <CardAction>
-                <Button variant="link" onClick={() => router.push("/")}>
-                  Back to Login
-                </Button>
-              </CardAction>
             </CardHeader>
 
             <CardContent>
               <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="John Doe"
-                    required
-                  />
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
+                {Sign_Up_Form?.map((data, index) => (
+                  <div className="grid gap-2" key={index}>
+                    <InputLabel
+                      handleInput={handleChange}
+                      loading={loading}
+                      title={data?.label}
+                      value={signUpdata?.[data?.label]}
+                      required={true}
+                      type={data?.type}
+                    />
+                  </div>
+                ))}
               </div>
 
               {error && (
@@ -139,6 +122,9 @@ export default function SignupCard() {
                 {loading ? <Spinner /> : "Sign Up"}
               </Button>
             </CardFooter>
+            <Button variant="link" onClick={() => router.push("/")}>
+              Back to Login
+            </Button>
           </Card>
         </form>
       </div>
