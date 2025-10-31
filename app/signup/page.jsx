@@ -79,9 +79,9 @@ export default function SignupCard() {
   };
 
   return (
-    <div className="flex w-full min-h-screen">
-      <div className="flex-1  bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300"></div>
-      <div className="flex-1 flex items-center justify-center w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 w-full min-h-screen">
+      <div className="hidden sm:block bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300"></div>
+      <div className="flex items-center justify-center w-full">
         <form onSubmit={handleSignup} className="w-full flex justify-center">
           <Card className="w-[70%] ">
             <CardHeader>
