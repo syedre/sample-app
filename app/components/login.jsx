@@ -38,17 +38,24 @@ export default function CardDemo() {
     try {
       const { email, password } = logindata;
       const res = await login(email, password);
+
       if (!res.ok) {
-        setError(data.message || "Login failed");
-        return;
+        const errorData = await res.json().catch(() => ({}));
+        throw errorData.message || "Something went wrong";
       }
-      await res.json().then((data) => {
-        localStorage.setItem("token", data.token);
-        router.push("/todos");
-      });
+
+      const data = await res.json();
+      localStorage.setItem("token", data.token);
+      router.push("/todos");
     } catch (err) {
-      console.error("Login error:", err);
-      setError("Something went wrong. Try again.");
+      console.log("Login error:", err);
+      setLoading(false);
+      if (typeof err === "string") {
+        setError(err);
+      } else {
+        // Handle true network failures (request never made it to the server)
+        setError("Something went wrong");
+      }
     }
   };
 
