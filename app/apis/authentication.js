@@ -1,5 +1,5 @@
 export async function signup(name, email, password) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
+  const response = await fetch("api/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
@@ -8,7 +8,7 @@ export async function signup(name, email, password) {
 }
 
 export async function login(email, password) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+  const response = await fetch("/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
