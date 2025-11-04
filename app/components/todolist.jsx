@@ -5,7 +5,7 @@ import { ItemDemo } from "./todoitem";
 import { Input } from "@/components/ui/input";
 import AddTodoDialog from "./addTodo";
 import { toast } from "sonner";
-import { deleteTodo, updateTodo } from "../apis/todos";
+import { deleteTodo, updateTodo } from "../utils/todos";
 import CommonSheet from "../common/commonSheet";
 import InputLabel from "../common/inputLabel";
 

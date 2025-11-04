@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { postTodo } from "../apis/todos";
+import { postTodo } from "../utils/todos";
 import CompoundDialog from "../common/compoundDialog";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";

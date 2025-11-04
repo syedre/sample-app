@@ -3,7 +3,7 @@ import React, { use, useEffect, useState } from "react";
 
 import TodoList from "../components/todolist";
 import UserMenu from "../components/userProfile";
-import { listTodos } from "../apis/todos";
+import { listTodos } from "../utils/todos";
 
 export default function TodosPage() {
   const [todos, setTodos] = useState([]);
