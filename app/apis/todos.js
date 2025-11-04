@@ -1,34 +1,35 @@
 export async function postTodo(name, description) {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/todos`, {
+
+  const response = await fetch("/api/addtodo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, description }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Failed to create todo");
+  }
+
+  return response;
+}
+
+export async function updateTodo(id, name, description) {
+  // const token = localStorage.getItem("token");
+  const response = await fetch(`api/todo/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       name,
       description,
     }),
   });
-  return response;
-}
-
-export async function updateTodo(id, name, description) {
-  // const token = localStorage.getItem("token");
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/updatetodo/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-        description: description,
-      }),
-    }
-  );
   return response;
 }
 
@@ -39,7 +40,7 @@ export async function listTodos() {
     return;
   }
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/listtodos`, {
+  const response = await fetch("/api/listtodos", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -50,7 +51,7 @@ export async function listTodos() {
 
 // apis/todos.js
 export async function deleteTodo(id) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/${id}`, {
+  const res = await fetch(`/api/todo/${id}`, {
     method: "DELETE",
   });
 
