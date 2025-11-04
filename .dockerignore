@@ -4,3 +4,4 @@ node_modules
 .vscode
 Dockerfile
 npm-debug.log
+.env
