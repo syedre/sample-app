@@ -6,7 +6,7 @@ async function DelayedComponent() {
   return <div>✅ Data loaded after 2 seconds!</div>;
 }
 
-export default function Page() {
+export default function SuspensePage() {
   return (
     <div style={{ fontFamily: "sans-serif", padding: 20 }}>
       <h2>Next.js Suspense Test</h2>
