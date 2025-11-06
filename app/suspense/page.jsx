@@ -2,6 +2,8 @@ import React, { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import SLoader from "../(client-components)/suspence-loader";
 
+export const dynamic = "force-dynamic";
+
 async function getData() {
   await new Promise((resolve) => setTimeout(resolve, 4000));
   return { message: "Data loaded after 4 seconds!" };
