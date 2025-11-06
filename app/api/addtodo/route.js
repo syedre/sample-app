@@ -1,7 +1,10 @@
+import { headers } from "next/headers";
+
 export async function POST(req) {
   try {
     const body = await req.json();
-    const authHeader = req.headers.get("authorization");
+    // const authHeader = req.headers.get("authorization");
+    const authHeader = (await headers()).get("authorization");
 
     const { name, description } = body; // token comes from client
 
