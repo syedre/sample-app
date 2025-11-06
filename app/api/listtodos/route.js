@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+
 export async function GET(req) {
   try {
     // Get the Authorization header from client request
