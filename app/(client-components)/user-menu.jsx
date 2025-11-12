@@ -4,9 +4,9 @@ import { useState } from "react";
 import { toast } from "sonner"; // or your toast library
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import CommonDropdown from "../common/commonDropdown";
-import CommonDialog from "../common/commonDialog";
-import UploadPage from "../components/imageUploader";
+import CommonDropdown from "@/app/common/commonDropdown";
+import CommonDialog from "@/app/common/commonDialog";
+import UploadPage from "@/app/components/imageUploader";
 
 export default function TodoMenu({ userData: initialUserData }) {
   const [open, setOpen] = useState(false);

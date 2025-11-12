@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Loader2 } from "lucide-react";
-import SLoader from "../(client-components)/suspence-loader";
-import GoSlow from "../(client-components)/slow";
+import SLoader from "@/app/(client-components)/suspence-loader";
+import GoSlow from "@/app/(client-components)/slow";
 
 export const dynamic = "force-dynamic";
 

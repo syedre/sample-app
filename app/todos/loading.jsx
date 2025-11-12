@@ -1,4 +1,4 @@
-import Loader from "../(client-components)/loader";
+import Loader from "@/app/(client-components)/loader";
 
 export default function PageLoader() {
   return <Loader />;

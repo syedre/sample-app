@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { deleteTodo } from "../utils/todos";
-import AddTodoDialog from "../components/addTodo";
+import { deleteTodo, updateTodo } from "@/app/utils/todos";
+import AddTodoDialog from "@/app/components/addTodo";
 import { Input } from "@/components/ui/input";
-import { ItemDemo } from "../components/todoitem";
-import CommonSheet from "../common/commonSheet";
+import { ItemDemo } from "@/app/components/todoitem";
+import CommonSheet from "@/app/common/commonSheet";
 import { toast } from "sonner";
-import InputLabel from "../common/inputLabel";
+import InputLabel from "@/app/common/inputLabel";
 
 const UserTodos = ({ data }) => {
   const [todos, setTodos] = useState(data);

@@ -1,6 +1,6 @@
 "use server";
 import React, { Suspense } from "react";
-import SearchTable from "../(client-components)/search-table";
+import SearchTable from "@/app/(client-components)/search-table";
 
 async function DashboardPage() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard`, {
