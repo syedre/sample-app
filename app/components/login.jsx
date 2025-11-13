@@ -95,13 +95,22 @@ export default function CardDemo() {
           </Button>
         </CardFooter>
       </form>
-      <Button
-        variant={"link"}
-        className=" text-blue-500"
-        onClick={() => router.push("/signup")}
-      >
-        Sign up
-      </Button>
+      <div className="flex justify-between px-3">
+        <Button
+          variant={"link"}
+          className=" text-red-500"
+          onClick={() => router.push("/forgot-password")}
+        >
+          Forgot Password
+        </Button>
+        <Button
+          variant={"link"}
+          className=" text-blue-500"
+          onClick={() => router.push("/signup")}
+        >
+          Sign up
+        </Button>
+      </div>
     </Card>
   );
 }
