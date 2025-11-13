@@ -105,7 +105,7 @@ export default function CardDemo() {
         </Button>
         <Button
           variant={"link"}
-          className=" text-blue-500"
+          className=""
           onClick={() => router.push("/signup")}
         >
           Sign up
