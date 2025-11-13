@@ -15,3 +15,12 @@ export async function login(email, password) {
   });
   return response;
 }
+
+export async function reset(email) {
+  const response = await fetch("/api/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  return response;
+}
