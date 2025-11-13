@@ -37,6 +37,7 @@ const ResetCard = () => {
               loading={false}
               title={"confirm email"}
               value={email}
+              required={true}
             />
           </div>
         </CardContent>
