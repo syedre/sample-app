@@ -17,7 +17,7 @@ import ParentOtp, { InputOTPPattern } from "./otp";
 
 const ResetCard = () => {
   const [loading, setloading] = useState(false);
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [err, setErr] = useState(null);
   const router = useRouter();
