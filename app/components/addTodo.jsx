@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { postTodo } from "../utils/todos";
-import CompoundDialog from "../common/compoundDialog";
+import { postTodo } from "@/app/utils/todos";
+import CompoundDialog from "@/app/common/compoundDialog";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
-import InputLabel from "../common/inputLabel";
+import InputLabel from "@/app/common/inputLabel";
 
 const AddTodoDialog = ({ onAdd }) => {
   const [open, setOpen] = useState(false);

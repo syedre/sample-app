@@ -2,6 +2,7 @@ export async function GET(req) {
   try {
     // Get the Authorization header from client request
     const authHeader = req.headers.get("authorization");
+    // const authHeader = (await headers()).get("authorization");
 
     // Proxy the request to your backend
     const response = await fetch(

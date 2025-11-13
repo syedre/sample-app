@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
@@ -14,8 +16,11 @@ export async function POST(req) {
         { status: response.status }
       );
     }
-
     const data = await response.json();
+    const cookieStore = await cookies();
+
+    cookieStore.set("token", data.token);
+
     return Response.json(data);
   } catch (error) {
     console.error("Login error:", error);

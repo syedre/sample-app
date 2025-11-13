@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ItemDemo } from "./todoitem";
+import { deleteTodo, updateTodo } from "@/app/utils/todos";
+import AddTodoDialog from "@/app/components/addTodo";
 import { Input } from "@/components/ui/input";
-import AddTodoDialog from "./addTodo";
+import { ItemDemo } from "@/app/components/todoitem";
+import CommonSheet from "@/app/common/commonSheet";
 import { toast } from "sonner";
-import { deleteTodo, updateTodo } from "../utils/todos";
-import CommonSheet from "../common/commonSheet";
-import InputLabel from "../common/inputLabel";
+import InputLabel from "@/app/common/inputLabel";
 
-const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
+const UserTodos = ({ data }) => {
+  const [todos, setTodos] = useState(data);
+  const [filteredTodos, setFilteredTodos] = useState(data);
+
   const [searchTodo, setSearchTodo] = useState("");
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -137,4 +140,4 @@ const TodoList = ({ todos, setTodos, filteredTodos, setFilteredTodos }) => {
   );
 };
 
-export default TodoList;
+export default UserTodos;

@@ -12,9 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
-import { login, signup } from "../utils/authentication";
-import { Sign_Up_Form } from "../constants/forms";
-import InputLabel from "../common/inputLabel";
+import { login, signup } from "@/app/utils/authentication";
+import { Sign_Up_Form } from "@/app/constants/forms";
+import InputLabel from "@/app/common/inputLabel";
 
 export default function SignupCard() {
   const router = useRouter();
