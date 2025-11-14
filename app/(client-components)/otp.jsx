@@ -9,16 +9,50 @@ import {
 } from "@/components/ui/input-otp";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { verifyOtp } from "@/app/utils/authentication";
+import { Spinner } from "@/components/ui/spinner";
 
-function InputOTPPattern({ otp, setOtp }) {
-  //   const [otp, setOtp] = useState("");
+const ParentOtp = ({ setStep, SetResetToken }) => {
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleOtpChange = (value) => {
-    setOtp(value);
-    console.log("Current OTP:", value);
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await verifyOtp(otp);
+      const data = await res.json();
+      if (data && data?.message === "success") {
+        SetResetToken(data.token);
+        setStep(3);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const verifyOtp = async (e) => {};
+  return (
+    <>
+      <InputOTPPattern otp={otp} setOtp={setOtp} />
+      <Button
+        className=""
+        onClick={handleVerifyOtp}
+        disabled={
+          otp?.length === 6 ? false : true || loading === true ? true : false
+        }
+      >
+        {loading === true ? <Spinner /> : <div>Verify OTP</div>}
+      </Button>
+    </>
+  );
+};
+
+function InputOTPPattern({ otp, setOtp }) {
+  const handleOtpChange = (value) => {
+    setOtp(value);
+  };
 
   return (
     <InputOTP
@@ -38,26 +72,5 @@ function InputOTPPattern({ otp, setOtp }) {
     </InputOTP>
   );
 }
-
-const ParentOtp = ({ setStep }) => {
-  const [otp, setOtp] = useState("");
-
-  const handleVerifyOtp = (e) => {
-    setStep(2);
-  };
-
-  return (
-    <>
-      <InputOTPPattern otp={otp} setOtp={setOtp} />
-      <Button
-        className={"w-[50px]"}
-        onClick={handleVerifyOtp}
-        disabled={otp?.length === 6 ? false : true}
-      >
-        Verify OTP
-      </Button>
-    </>
-  );
-};
 
 export default ParentOtp;
