@@ -14,12 +14,15 @@ import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 import { reset } from "../utils/authentication";
 import ParentOtp, { InputOTPPattern } from "./otp";
+import ConfirmPassword from "./confirm-password";
 
 const ResetCard = () => {
   const [loading, setloading] = useState(false);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [err, setErr] = useState(null);
+  const [resetToken, SetResetToken] = useState(null);
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -70,7 +73,23 @@ const ResetCard = () => {
                 )}
               </>
             )}
-            {step === 2 && <ParentOtp setStep={setStep} />}
+            {step === 2 && (
+              <ParentOtp setStep={setStep} SetResetToken={SetResetToken} />
+            )}
+            {step === 3 && (
+              <ConfirmPassword
+                token={resetToken}
+                loading={loading}
+                setloading={setloading}
+                SetResetToken={SetResetToken}
+                setStep={setStep}
+              />
+            )}
+            {step === 4 && (
+              <p className="text-green-400">
+                ✅Password has been Updated Successfully
+              </p>
+            )}
           </div>
         </CardContent>
 
@@ -86,9 +105,15 @@ const ResetCard = () => {
         <Button
           variant={"link"}
           className=""
-          onClick={() => router.push("/signup")}
+          onClick={() => {
+            if (step === 4) {
+              router.push("/");
+            } else {
+              router.push("/signup");
+            }
+          }}
         >
-          Sign up
+          {step === 4 ? "Login" : "Sign Up"}
         </Button>
       </div>
     </Card>
