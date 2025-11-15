@@ -13,30 +13,30 @@ import {
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { login } from "@/app/utils/authentication";
-import InputLabel from "@/app/common/inputLabel";
 import { Login_Form } from "@/app/constants/forms";
+import { useForm, Controller } from "react-hook-form";
+import FormInputLabel from "../common/FormInputLabel";
 
 export default function CardDemo() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [logindata, setLoginData] = useState({
-    email: "",
-    password: "",
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleLogin = (e) => {
-    const { id, value } = e.target;
-    setLoginData((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const formSubmit = async (data) => {
+    const { email, password } = data;
     setError("");
 
     try {
-      const { email, password } = logindata;
       const res = await login(email, password);
 
       if (!res.ok) {
@@ -49,7 +49,7 @@ export default function CardDemo() {
       router.push("/todos");
     } catch (err) {
       console.log("Login error:", err);
-      setLoading(false);
+      // setLoading(false);
       if (typeof err === "string") {
         setError(err);
       } else {
@@ -61,7 +61,7 @@ export default function CardDemo() {
 
   return (
     <Card className="w-[70%]">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(formSubmit)}>
         <CardHeader className={"pb-4"}>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -72,13 +72,18 @@ export default function CardDemo() {
           <div className="flex flex-col gap-6">
             {Login_Form?.map((data, index) => (
               <div className="grid gap-2" key={index}>
-                <InputLabel
-                  handleInput={handleLogin}
-                  loading={loading}
-                  title={data?.label}
-                  value={logindata?.[data?.label]}
-                  required={true}
-                  type={data?.type}
+                <Controller
+                  name={data?.label}
+                  control={control}
+                  rules={data?.rules}
+                  render={({ field }) => (
+                    <FormInputLabel
+                      title={data?.label}
+                      type={data?.type}
+                      errors={errors}
+                      {...field}
+                    />
+                  )}
                 />
               </div>
             ))}
@@ -90,8 +95,8 @@ export default function CardDemo() {
         </CardContent>
 
         <CardFooter className="flex-col gap-2 mt-4">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? <Spinner /> : "Login"}
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? <Spinner /> : "Login"}
           </Button>
         </CardFooter>
       </form>
