@@ -19,12 +19,12 @@ import FormInputLabel from "../common/FormInputLabel";
 
 export default function CardDemo() {
   const router = useRouter();
-  const [error, setError] = useState("");
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
+    setError,
   } = useForm({
     defaultValues: {
       email: "",
@@ -34,28 +34,21 @@ export default function CardDemo() {
 
   const formSubmit = async (data) => {
     const { email, password } = data;
-    setError("");
 
     try {
       const res = await login(email, password);
+      const data = await res.json();
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw errorData.message || "Something went wrong";
+        throw new Error(data?.message);
       }
 
-      const data = await res.json();
       localStorage.setItem("token", data.token);
       router.push("/todos");
-    } catch (err) {
-      console.log("Login error:", err);
-      // setLoading(false);
-      if (typeof err === "string") {
-        setError(err);
-      } else {
-        // Handle true network failures (request never made it to the server)
-        setError("Something went wrong");
-      }
+    } catch (error) {
+      setError("root", {
+        message: error?.message,
+      });
     }
   };
 
@@ -88,9 +81,10 @@ export default function CardDemo() {
               </div>
             ))}
           </div>
-
-          {error && (
-            <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
+          {errors?.root && (
+            <p className="text-red-500 text-sm mt-2 text-center">
+              {errors?.root?.message}
+            </p>
           )}
         </CardContent>
 

@@ -9,14 +9,14 @@ export async function POST(req) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
+    const data = await response.json();
 
     if (!response.ok) {
       return Response.json(
-        { error: "Login failed" },
+        { message: data?.message },
         { status: response.status }
       );
     }
-    const data = await response.json();
     const cookieStore = await cookies();
 
     cookieStore.set("token", data.token);
@@ -24,6 +24,6 @@ export async function POST(req) {
     return Response.json(data);
   } catch (error) {
     console.error("Login error:", error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    return Response.json({ message: "Internal server error" }, { status: 500 });
   }
 }
