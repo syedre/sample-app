@@ -8,15 +8,15 @@ export async function POST(req) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
     });
+    const data = await response.json();
 
     if (!response.ok) {
       return Response.json(
-        { error: "Signup failed" },
+        { message: data?.message },
         { status: response.status }
       );
     }
 
-    const data = await response.json();
     return Response.json(data);
   } catch (error) {
     console.error("Signup error:", error);

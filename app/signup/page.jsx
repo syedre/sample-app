@@ -15,36 +15,34 @@ import { Spinner } from "@/components/ui/spinner";
 import { login, signup } from "@/app/utils/authentication";
 import { Sign_Up_Form } from "@/app/constants/forms";
 import InputLabel from "@/app/common/inputLabel";
+import { Controller, useForm } from "react-hook-form";
+import FormInputLabel from "../common/FormInputLabel";
 
 export default function SignupCard() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [signUpdata, setSignUpdata] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+    setError,
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setSignUpdata((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    setSuccess("");
+  const handleSignup = async (signUpdata) => {
     const { name, email, password } = signUpdata;
-
     try {
       const res = await signup(name, email, password);
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Signup failed");
+        setError("root", {
+          message: data.message,
+        });
         return;
       }
 
@@ -60,21 +58,18 @@ export default function SignupCard() {
           localStorage.setItem("token", loginData.token);
           router.push("/todos");
         } else {
-          setError("Signup success, but login failed. Please try logging in.");
+          setError("root", {
+            message: loginData.message,
+          });
+          return;
         }
       }
-
-      setSuccess("Signup successful! Redirecting...");
     } catch (err) {
       console.error("Signup error:", err);
-      setError("Something went wrong. Try again.");
-    } finally {
-      setSignUpdata({
-        name: "",
-        email: "",
-        password: "",
+
+      setError("root", {
+        message: "Something went wrong. Try again",
       });
-      setLoading(false);
     }
   };
 
@@ -82,7 +77,10 @@ export default function SignupCard() {
     <div className="grid grid-cols-1 sm:grid-cols-2 w-full min-h-screen">
       <div className="hidden sm:block bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300"></div>
       <div className="flex items-center justify-center w-full">
-        <form onSubmit={handleSignup} className="w-full flex justify-center">
+        <form
+          onSubmit={handleSubmit(handleSignup)}
+          className="w-full flex justify-center"
+        >
           <Card className="w-[70%] ">
             <CardHeader>
               <CardTitle>Create an account</CardTitle>
@@ -95,31 +93,33 @@ export default function SignupCard() {
               <div className="flex flex-col gap-6">
                 {Sign_Up_Form?.map((data, index) => (
                   <div className="grid gap-2" key={index}>
-                    <InputLabel
-                      handleInput={handleChange}
-                      loading={loading}
-                      title={data?.label}
-                      value={signUpdata?.[data?.label]}
-                      required={true}
-                      type={data?.type}
+                    <Controller
+                      name={data?.label}
+                      control={control}
+                      rules={data?.rules}
+                      render={({ field }) => (
+                        <FormInputLabel
+                          title={data?.label}
+                          type={data?.type}
+                          errors={errors}
+                          {...field}
+                        />
+                      )}
                     />
                   </div>
                 ))}
               </div>
 
-              {error && (
-                <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
-              )}
-              {success && (
-                <p className="text-green-600 text-sm mt-2 text-center">
-                  {success}
+              {errors?.root && (
+                <p className="text-red-500 text-sm mt-2 text-center">
+                  {errors?.root?.message}
                 </p>
               )}
             </CardContent>
 
             <CardFooter className="flex-col gap-2">
-              <Button type="submit" className="w-full " disabled={loading}>
-                {loading ? <Spinner /> : "Sign Up"}
+              <Button type="submit" className="w-full " disabled={isSubmitting}>
+                {isSubmitting ? <Spinner /> : "Sign Up"}
               </Button>
             </CardFooter>
             <Button
